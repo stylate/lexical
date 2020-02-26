@@ -7,25 +7,27 @@ class TrieNode
 
     def initialize(val)
         @val = val
-        @children = Set.new
+        @children = Hash.new{TrieNode.new}
         @is_word = false
     end
 
     # appends character value c to children
     def insert_child(c)
-        return @children[c] if @children.include?(c)
-        child = TrieNode.new(c)
-        @children.add child
-        child
+        if @children.include?(c)
+            return @children[c]
+        else
+            @children[c] = TrieNode.new(c)
+            return @children[c]
+        end
     end
 
     # attempts to get character c from current trie node
     def get_char(c)
-        @children.each do |char|
-            return char if char.val == c
+        if @children.key?(c)
+            return @children[c]
+        else
+            return nil
         end
-
-        nil
     end
 
 end
@@ -43,24 +45,19 @@ class Trie
             child = node.insert_child(c)
             node = child
         }
-        @root.is_word = true
+        node.is_word = true
     end
 
-    # search for word in trie
+    # search for word in trie and return the end (whether it is a prefix or the full word)
     def search(word)
         node = @root
         word.each_char { |c|
-            child = node.get_char(c)
-            node = child
+            unless @children.key?(c)
+                return nil
+            end
+            node = @children[c]
         }
-
-        # only return word if is_word = true
-        if node.is_word
-            return node
-        else
-            return nil
-        end
-        
+        return node
     end
 
     # performs autocomplete for the current path by traversing down the trie
@@ -87,8 +84,8 @@ class Trie
         puts prefix_node
         words = []
 
-        autocomplete(prefix_node, prefix, words)
-        puts words
+        # autocomplete(prefix_node, prefix, words)
+        # puts words
 
         words
     end
