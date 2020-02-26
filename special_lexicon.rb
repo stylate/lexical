@@ -28,9 +28,6 @@ class SpecialLexicon < Lexicon
   # Generates an array of all the words that have the given word as a prefix
   def get_prefixed_words(prefix)
     # FILL ME IN
-    @trie.get_children().each do |key, value|
-      puts value.val
-    end
     puts findWords(prefix)
     return []
   end

@@ -23,7 +23,7 @@ class TrieNode
 
     # attempts to get character c from current trie node
     def get_char(c)
-        if @children.key?(c)
+        if @children.key?(:c)
             return @children[c]
         else
             return nil
@@ -51,11 +51,13 @@ class Trie
     # search for word in trie and return the end (whether it is a prefix or the full word)
     def search(word)
         node = @root
+        puts "starting search . . ."
         word.each_char { |c|
-            unless @children.key?(c)
+            puts c
+            unless node.children.key?(c)
                 return nil
             end
-            node = @children[c]
+            node = node.children[c]
         }
         return node
     end
@@ -77,11 +79,10 @@ class Trie
     # perform autocomplete starting with the prefix
     def findWords(prefix)
         prefix_node = search(prefix)
-        unless prefix_node?
+        puts prefix_node
+        unless prefix_node
             return []
         end
-        
-        puts prefix_node
         words = []
 
         # autocomplete(prefix_node, prefix, words)
