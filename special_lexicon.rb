@@ -3,17 +3,20 @@ require './lexicon'
 class SpecialLexicon < Lexicon
 
   # access anagrams and helper functions from parent class
-  attr_accessor :anagrams
+  attr_accessor :anagrams, :trie
 
   def get_counts(word)
     super(word)
+  end
+
+  def findWords(prefix)
+    super(prefix)
   end
 
   # Generates an array of all the anagrams of the given word
   def get_anagrams(word)
     # FILL ME IN
     counter = get_counts(word.downcase)
-    puts counter # debug
     if @anagrams.has_key?(counter)
       return @anagrams[counter].to_a - [word.downcase]
     else
@@ -25,6 +28,10 @@ class SpecialLexicon < Lexicon
   # Generates an array of all the words that have the given word as a prefix
   def get_prefixed_words(prefix)
     # FILL ME IN
+    @trie.get_children().each do |n|
+      puts n.val
+    end
+    puts findWords(prefix)
     return []
   end
 

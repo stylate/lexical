@@ -1,3 +1,5 @@
+require './trie'
+
 class Lexicon
 
   def initialize
@@ -8,7 +10,10 @@ class Lexicon
 
     # hash containing word counts as keys and potential anagrams as values
     # https://stackoverflow.com/questions/40338981/how-do-i-put-sets-or-arrays-in-a-two-dimensional-ruby-hash
-    @anagrams = Hash.new { |hash, key| hash[key] = Set.new }
+    @anagrams = Hash.new{|h, k| h[k] = Set.new}
+    
+    # construct trie
+    @trie = Trie.new
 
     file = File.new('words.txt', 'r')
     while (line = file.gets)
@@ -16,6 +21,7 @@ class Lexicon
       @array.push line
       freq = get_counts(line)
       @anagrams[freq].add line
+      @trie.insert(line)
       @hash[line] = true
     end
     file.close
@@ -30,6 +36,10 @@ class Lexicon
         h[char] += 1
     end
     h
+  end
+
+  def findWords(prefix)
+    return @trie.findWords(prefix)
   end
 
   # Returns true if the given word is in the lexicon
