@@ -65,33 +65,23 @@ class Trie
     # performs autocomplete for the current path by traversing down the trie
     def autocomplete(curr_node, curr_path, word_list)
         if curr_node.is_word
-            word_list.append(curr_path)
+            word_list << curr_path
         end
 
-        puts word_list
-        curr_node.children.each { |c| 
-            child = node.get_char(c)
+        curr_node.children.each_value { |child| 
             autocomplete(child, curr_path + child.val, word_list)
-            node = child
         }
     end
 
     # perform autocomplete starting with the prefix
     def findWords(prefix)
-        prefix_node = search(prefix)
-        puts prefix_node
-        unless prefix_node
-            return []
-        end
         words = []
+        prefix_node = search(prefix)
+        unless prefix_node
+            return words
+        end
 
-        # autocomplete(prefix_node, prefix, words)
-        # puts words
-
+        autocomplete(prefix_node, prefix, words)
         words
-    end
-
-    def get_children()
-        return @root.children
     end
 end
