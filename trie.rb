@@ -20,16 +20,6 @@ class TrieNode
             return @children[c]
         end
     end
-
-    # attempts to get character c from current trie node
-    def get_char(c)
-        if @children.key?(:c)
-            return @children[c]
-        else
-            return nil
-        end
-    end
-
 end
 
 class Trie
@@ -51,7 +41,6 @@ class Trie
     # search for word in trie and return the end (whether it is a prefix or the full word)
     def search(word)
         node = @root
-        puts "starting search . . ."
         word.each_char { |c|
             puts c
             unless node.children.key?(c)
