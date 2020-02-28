@@ -3,8 +3,6 @@ require './trie'
 class Lexicon
 
   def initialize
-    # The full array of all words
-    @array = []
     # A hash containing all the words as keys
     @hash = {}
 
@@ -18,7 +16,6 @@ class Lexicon
     file = File.new('words.txt', 'r')
     while (line = file.gets)
       line.strip!.downcase!
-      @array.push line
       freq = get_counts(line)
       @anagrams[freq].add line
       @trie.insert(line)

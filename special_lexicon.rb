@@ -40,13 +40,12 @@ class SpecialLexicon < Lexicon
     start_path = [start_word]
     visited = Set.new
     queue = [[start_word, 0]]
-    p queue
 
     while queue
       curr = queue.shift
       curr_word = curr[0]
       curr_path = curr[1] # use length of path for debugging at the very moment
-      p curr_path
+      p curr
 
       if curr_word == end_word
         return curr_path
