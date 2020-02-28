@@ -11,7 +11,7 @@ class TrieNode
         @is_word = false
     end
 
-    # appends character value c to children
+    # appends character value c to children unless c already exists in children
     def insert_child(c)
         if @children.include?(c)
             return @children[c]
@@ -42,7 +42,6 @@ class Trie
     def search(word)
         node = @root
         word.each_char { |c|
-            puts c
             unless node.children.key?(c)
                 return nil
             end
