@@ -1,4 +1,5 @@
 require './lexicon'
+require './word'
 
 class SpecialLexicon < Lexicon
 
@@ -6,6 +7,10 @@ class SpecialLexicon < Lexicon
   attr_accessor :anagrams, :trie, :hash
 
   def get_counts(word)
+    super(word)
+  end
+
+  def is_word?(word)
     super(word)
   end
 
@@ -30,33 +35,43 @@ class SpecialLexicon < Lexicon
     # FILL ME IN
     return findWords(prefix)
   end
-
+  
+  # Traverses through the implicit linked list (Word) object and generates the ladder.
+  def getLadder(end_word)
+    stack = []
+    curr_word = end_word
+    while curr_word
+      stack << curr_word.val
+      curr_word = curr_word.prev
+    end
+    stack.reverse()
+  end
 
   # Generates the shortest possible word ladder connecting the two words
   def get_word_ladder(start_word, end_word)
     # FILL ME IN
+    # problem with this solution: a little bit inefficient due to queue
     letters = *('a'..'z')
 
-    start_path = [start_word]
+    start_word = Word.new(start_word) # parameters point to current word (string) and previous word object
     visited = Set.new
-    queue = [[start_word, 0]]
+    queue = [start_word]
 
-    while queue
+    while queue # can potentially go through entire dictionary
       curr = queue.shift
-      curr_word = curr[0]
-      curr_path = curr[1] # use length of path for debugging at the very moment
-      p curr
+      curr_word = curr.val
 
       if curr_word == end_word
-        return curr_path
+        return getLadder(curr)
       end
 
-      curr_word.each_char.with_index do |char, i|
-        letters.each{ |c|
-          next_word = curr_word[0...i - 1] + c + curr_word[i...curr_word.length]
-          if !visited.include?(next_word) && @hash.key?(next_word)
+      curr_word.each_char.with_index do |char, i| # length of curr word
+        letters.each{ |c| # a->z
+          next_word = curr_word[0...i] + c + curr_word[i + 1...curr_word.size]
+          next_word_obj = Word.new(next_word, curr)
+          if !visited.include?(next_word) && is_word?(next_word)
             visited.add(next_word)
-            queue << [next_word, curr_path + 1]
+            queue << next_word_obj
           end
         }
       end
