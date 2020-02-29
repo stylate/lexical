@@ -22,10 +22,10 @@ class SpecialLexicon < Lexicon
   def get_anagrams(word)
     # FILL ME IN
     counter = get_counts(word.downcase)
-    if @anagrams.has_key?(counter)
+    if @anagrams.has_key?(counter) && @anagrams[counter].length() > 0
       return @anagrams[counter].to_a - [word.downcase]
     else
-      return []
+      return "No anagrams found!"
     end
   end
 
@@ -33,12 +33,21 @@ class SpecialLexicon < Lexicon
   # Generates an array of all the words that have the given word as a prefix
   def get_prefixed_words(prefix)
     # FILL ME IN
-    return findWords(prefix)
+    output = findWords(prefix)
+    if output.length() == 0
+      return "No prefixed words found!"
+    end
+    findWords(prefix)
   end
 
   # Generates the shortest possible word ladder connecting the two words
   def get_word_ladder(start_word, end_word)
     # FILL ME IN
+    # error handling
+    if start_word.length != end_word.length
+      return "Both words have unequal lengths, please try again!"
+    end
+
     letters = *('a'..'z') # test each character in alphabet
 
     start_word = Word.new(start_word)
