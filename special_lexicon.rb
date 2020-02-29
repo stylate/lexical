@@ -18,11 +18,18 @@ class SpecialLexicon < Lexicon
     super(prefix)
   end
 
+  def letter?(lookAhead)
+    lookAhead =~ /[[:alpha:]]/
+  end
+
   # Generates an array of all the anagrams of the given word
   def get_anagrams(word)
     # FILL ME IN
+    unless letter?(word)
+      return "Invalid input (string should only consist of letters)."
+    end
     counter = get_counts(word.downcase)
-    if @anagrams.has_key?(counter) && @anagrams[counter].length() > 0
+    if @anagrams.has_key?(counter) && @anagrams[counter].size() > 0
       return @anagrams[counter].to_a - [word.downcase]
     else
       return "No anagrams found!"
@@ -33,6 +40,9 @@ class SpecialLexicon < Lexicon
   # Generates an array of all the words that have the given word as a prefix
   def get_prefixed_words(prefix)
     # FILL ME IN
+    unless letter?(prefix)
+      return "Invalid input (string should only consist of letters)."
+    end
     output = findWords(prefix)
     if output.length() == 0
       return "No prefixed words found!"
@@ -44,6 +54,9 @@ class SpecialLexicon < Lexicon
   def get_word_ladder(start_word, end_word)
     # FILL ME IN
     # error handling
+    unless letter?(start_word) || letter?(end_word)
+      return "Invalid input (start and end words should only consist of letters)."
+    end
     if start_word.length != end_word.length
       return "Both words have unequal lengths, please try again!"
     end

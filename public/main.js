@@ -8,11 +8,10 @@ function anagrams(event) {
     type: 'GET',
     success: function(data) {
       $('#anagram-results').html(data);
-      console.log(data);
     },
-    error: function(request, err) {
-      alert("Request: " + JSON.stringify(request));
-      alert(err);
+    error: function() {
+      let msg = "Invalid input. Please try again!"
+      $('#anagram-results').html(msg);
     }
   })
   return false;
@@ -25,11 +24,10 @@ function prefixes(event) {
     type: 'GET',
     success: function(data) {
       $('#prefix-results').html(data);
-      console.log(data);
     },
-    error: function(request, err) {
-      alert("Request: " + JSON.stringify(request));
-      alert(err);
+    error: function() {
+      let msg = "Invalid input. Please try again!"
+      $('#prefix-results').html(msg);
     }
   })
   return false;
@@ -43,11 +41,10 @@ function ladder(event) {
     type: 'GET',
     success: function(data) {
       $('#ladder-results').html(data);
-      console.log(data);
     },
-    error: function(request, err) {
-      alert("Request: " + JSON.stringify(request));
-      alert(err);
+    error: function() {
+      let msg = "Invalid input (start or end words are invalid). Please try again!"
+      $('#ladder-results').html(msg);
     }
   })
   return false;
