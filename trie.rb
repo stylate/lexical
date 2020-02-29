@@ -56,6 +56,7 @@ class Trie
             word_list << curr_path
         end
 
+        # recursively visit each child in the node's children => all prefixed words
         curr_node.children.each_value { |child| 
             autocomplete(child, curr_path + child.val, word_list)
         }
@@ -70,6 +71,6 @@ class Trie
         end
 
         autocomplete(prefix_node, prefix, words)
-        words
+        words - [prefix]
     end
 end

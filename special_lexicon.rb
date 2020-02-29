@@ -18,14 +18,14 @@ class SpecialLexicon < Lexicon
     super(prefix)
   end
 
-  def letter?(lookAhead)
-    lookAhead =~ /[[:alpha:]]/
+  def valid_word?(string)
+    !string.match(/\A[a-zA-Z]*\z/).nil?
   end
 
   # Generates an array of all the anagrams of the given word
   def get_anagrams(word)
     # FILL ME IN
-    unless letter?(word)
+    unless valid_word?(word)
       return "Invalid input (string should only consist of letters)."
     end
     counter = get_counts(word.downcase)
@@ -40,21 +40,21 @@ class SpecialLexicon < Lexicon
   # Generates an array of all the words that have the given word as a prefix
   def get_prefixed_words(prefix)
     # FILL ME IN
-    unless letter?(prefix)
+    unless valid_word?(prefix)
       return "Invalid input (string should only consist of letters)."
     end
     output = findWords(prefix)
     if output.length() == 0
       return "No prefixed words found!"
     end
-    findWords(prefix)
+    output
   end
 
   # Generates the shortest possible word ladder connecting the two words
   def get_word_ladder(start_word, end_word)
     # FILL ME IN
     # error handling
-    unless letter?(start_word) || letter?(end_word)
+    unless valid_word?(start_word) || valid_word?(end_word)
       return "Invalid input (start and end words should only consist of letters)."
     end
     if start_word.length != end_word.length
@@ -78,7 +78,7 @@ class SpecialLexicon < Lexicon
 
       curr_word.each_char.with_index do |char, i| # length of curr word
         letters.each{ |c| # a->z
-          next_word = curr_word[0...i] + c + curr_word[i + 1...curr_word.size]
+          next_word = curr_word[0...i] + c + curr_word[i + 1...curr_word.size] 
           next_word_obj = Word.new(next_word)
           if !visited.include?(next_word) && is_word?(next_word)
             # add onto current path and add new word object to queue
